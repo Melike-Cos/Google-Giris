@@ -15,16 +15,16 @@ if(isset($_GET['code'])){
     $picture   = $user['picture'];
   
 
-    $varmi   = $conn->prepare("SELECT * FROM user WHERE email=:e ");
-    $varmi->execute([':e' => $email,]);
-    if($varmi->rowCount()){
+    $existing   = $conn->prepare("SELECT * FROM user WHERE email=:e ");
+    $existing->execute([':e' => $email,]);
+    if($existing->rowCount()){
 
-        $guncelle  = $conn->prepare("UPDATE user SET name=:n,picture=:r WHERE email=:e ");
-        $guncelle->execute([':n' => $name,':r'=>$picture,':e'=>$email,]);
+        $update  = $conn->prepare("UPDATE user SET name=:n,picture=:r WHERE email=:e ");
+        $update->execute([':n' => $name,':r'=>$picture,':e'=>$email,]);
 
     }else{
 
-        $ekle   = $conn->prepare("INSERT INTO user values
+        $add   = $conn->prepare("INSERT INTO user values
             name      =:n,
             email     =:e,
             password  =:p,
@@ -32,7 +32,7 @@ if(isset($_GET['code'])){
           
         ");
 
-        $ekle->execute([
+        $add->execute([
             ':n'    => $name,
             ':e'    => $email,
             ':p'    => $passwords,
